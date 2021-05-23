@@ -8,11 +8,20 @@ const sellerRouter = require("./routes/seller");
 let buyerModel = require("./schema/buyerSchema");
 let sellerModel = require("./schema/sellerSchema");
 const app = express();
+require('dotenv').config()
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//connection mongoDB database
 mongodb();
-require('dotenv').config()
+
+
 app.get('/',(req,res)=> res.send('api-server'));
+
+
+
+//Api for buyer and seller to register 
+// use password encryption with salting
 app.post("/api/auth/register", async (req, res)=> {
     try {
         let username = req.body.username;
@@ -40,6 +49,10 @@ app.post("/api/auth/register", async (req, res)=> {
     }
     
 });
+
+
+//for login API 
+// use password encryption with salting
 app.post("/api/auth/login", async (req, res) => {
     let username = req.body.username;
     let type=req.body.type;
@@ -87,6 +100,11 @@ app.post("/api/auth/login", async (req, res) => {
     }
           
 });
+
+
+//for handling API for buyer
 app.use("/api/buyer/", buyerRouter);
+
+//for handling API for seller
 app.use("/api/seller/", sellerRouter);
 app.listen(5000,()=> console.log("sever running on 5000"));

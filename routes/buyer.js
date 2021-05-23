@@ -4,6 +4,9 @@ let buyerModel = require("../schema/buyerSchema");
 let catalogModel = require("../schema/catalogSchema");
 let orderModel = require("../schema/orderSchema");
 let Auth = require("../auth");
+
+
+//get request to see all seller 
 router.get("/list-of-sellers",async(req,res)=>{
 
     try{
@@ -16,6 +19,9 @@ router.get("/list-of-sellers",async(req,res)=>{
     
 
 });
+
+
+//get request for buyer to seller catalog 
 router.get("/seller-catalog/:seller_id",async(req,res)=>{
     try{
         const sellerCatalog=await catalogModel.find({seller_id:req.params.seller_id},{seller_id:1,products:1});
@@ -26,6 +32,10 @@ router.get("/seller-catalog/:seller_id",async(req,res)=>{
     }
     
 });
+
+
+//post request for buyer to place order by with protected api 
+//In line 41 product is array of object and each object contain name and quantity of product
 router.post("/create-order/:seller_id",Auth,async(req,res)=>{
     try{
         const product=req.body.product;
